@@ -13,7 +13,7 @@ export const main =
             shouldBuy: if () {
                 return ;
               } else {
-                return ; } 
+                return  ;}
                 
         }),
         View('NFT', {
@@ -27,7 +27,7 @@ export const main =
                 const initPrice = declassify(_params.initialPrice);
                 const lifetime = declassify(_params.lifetime);
                 });
-                Creator.publish(initPrice, lifetime);
+                Creator.publish(initPrice, lifetime, id);
             const[keepGoing, owner, price, ownerCount] = 
                 parallelReduce(true, Creator, 0 )
                   .invariant(balance() == initialPrice)
@@ -43,6 +43,11 @@ export const main =
                     (_) => {
                         each([Creator, Buyer], () => {
                             Buyer.only(() => {
+                                if(interact.shouldBuy()){
+                                    return[true, Buyer, initialPrice * (timeRemaining/lifetime)];
+                                }   else {
+                                    return[];
+                                }
                                 
                         return [ true, owner, initialPrice * (timeRemaining/lifetime)]; })
                    .timeout((deadline, () => {
